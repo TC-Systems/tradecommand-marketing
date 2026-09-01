@@ -1,0 +1,95 @@
+@import "tailwindcss";
+@plugin "daisyui";
+
+/* Figtree, vendored rather than linked, the same as the app. One variable file per subset, 400-700. */
+@font-face {
+  font-family: "Figtree";
+  font-style: normal;
+  font-weight: 400 700;
+  font-display: swap;
+  src: url("/figtree-latin.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: "Figtree";
+  font-style: normal;
+  font-weight: 400 700;
+  font-display: swap;
+  src: url("/figtree-latin-ext.woff2") format("woff2");
+  unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
+}
+
+/* "Flare Light", copied token for token from the app's `tradecommand` theme. The two rules the
+   palette cannot survive without are below it: the primary is a FILL at 74% lightness, so it never
+   carries text, and a filled control needs an absolute darkened border to clear 3:1 on this paper. */
+@plugin "daisyui/theme" {
+  name: "tradecommand";
+  default: true;
+  prefersdark: false;
+  color-scheme: "light";
+
+  --color-base-100: oklch(99% 0.004 40);
+  --color-base-200: oklch(96.5% 0.007 38);
+  --color-base-300: oklch(92% 0.011 36);
+  --color-base-content: oklch(24% 0.012 32);
+
+  --color-primary: oklch(74% 0.150 32);
+  --color-primary-content: oklch(24% 0.060 32);
+
+  --color-secondary: oklch(92% 0.045 35);
+  --color-secondary-content: oklch(45% 0.130 32);
+
+  --color-accent: oklch(48% 0.100 62);
+  --color-accent-content: oklch(98% 0.012 62);
+
+  --color-neutral: oklch(24% 0.014 32);
+  --color-neutral-content: oklch(96% 0.008 34);
+
+  --color-info: oklch(88% 0.055 235);
+  --color-info-content: oklch(45% 0.095 238);
+
+  --color-success: oklch(88% 0.065 150);
+  --color-success-content: oklch(42% 0.105 150);
+
+  --color-warning: oklch(90% 0.055 52);
+  --color-warning-content: oklch(44% 0.100 45);
+
+  --color-error: oklch(50% 0.190 12);
+  --color-error-content: oklch(99% 0.008 12);
+
+  --radius-selector: 0.25rem;
+  --radius-field: 0.25rem;
+  --radius-box: 0.375rem;
+  --size-selector: 0.25rem;
+  --size-field: 0.25rem;
+  --border: 1px;
+  --depth: 0;
+  --noise: 0;
+}
+
+/* The primary is a fill at 74% and cannot read as text; this is the text half. */
+:root {
+  --link: oklch(50% 0.150 32);
+}
+
+@theme {
+  --color-link: var(--link);
+
+  --font-sans: "Figtree", ui-sans-serif, system-ui, sans-serif;
+  --default-font-family: "Figtree", ui-sans-serif, system-ui, sans-serif;
+}
+
+/* DaisyUI derives a button's border by darkening its own fill PROPORTIONALLY, which is nothing at
+   all on a 74% primary — fill and border land at the same lightness and the button reads as a soft
+   blob on near-white paper. Making the darkening ABSOLUTE is what turns the shape back into a
+   control. Do not remove it, and do not lighten the primary. */
+.btn-primary,
+.brand-fill {
+  border-color: color-mix(in oklab, var(--color-primary) 74%, black);
+}
+
+.brand-fill {
+  border-style: solid;
+  border-width: 1px;
+}

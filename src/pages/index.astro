@@ -1,0 +1,45 @@
+---
+import Layout from "../layouts/Layout.astro";
+
+const APP_URL = "https://app.tradecommand.com.au";
+const year = new Date().getFullYear();
+---
+
+<Layout>
+  <div class="paper-grain min-h-dvh flex flex-col items-center justify-center px-6 py-12 sm:px-10 sm:py-16">
+    <main class="w-full max-w-2xl text-center">
+      <div class="inline-flex items-center gap-2.5">
+        <span class="brand-fill grid place-items-center size-8 rounded-selector bg-primary text-primary-content font-bold shrink-0">T</span>
+        <span class="text-lg font-semibold tracking-tight">TradeCommand</span>
+      </div>
+
+      <h1 class="mt-10 text-[2.5rem] leading-[1.06] sm:text-6xl font-bold tracking-tight text-balance">
+        Quote the job.<br />
+        <span class="text-link">Invoice all of it.</span>
+      </h1>
+
+      <p class="mt-6 mx-auto max-w-xl text-lg text-base-content/70 leading-relaxed text-pretty">
+        For electricians, plumbers and builders. Leads, quotes, jobs, variations, purchase
+        orders, timesheets and invoices. The extra work you did in week three is still on
+        the bill in week six.
+      </p>
+
+      <a href={`${APP_URL}/session/new`} class="btn btn-primary btn-lg rounded-field px-9 mt-10">Sign in</a>
+    </main>
+
+    <footer class="mt-24 text-sm text-base-content/45">
+      <p>&copy; {year} TradeCommand — a TC-Systems product, built in Australia.</p>
+    </footer>
+  </div>
+</Layout>
+
+<style>
+  /* Near-white warm paper with one soft coral glow behind the mark. The primary is a fill colour and
+     this is the only place on the page it appears at any size — keep it faint, or the paper stops
+     reading as paper and the button loses the ground it needs to sit against. */
+  .paper-grain {
+    background-color: var(--color-base-100);
+    background-image:
+      radial-gradient(52rem 26rem at 50% -6%, color-mix(in oklch, var(--color-primary) 16%, transparent) 0%, transparent 72%);
+  }
+</style>
