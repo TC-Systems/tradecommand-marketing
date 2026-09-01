@@ -7,24 +7,33 @@ const year = new Date().getFullYear();
 
 <Layout>
   <div class="paper-grain min-h-dvh flex flex-col items-center justify-center px-6 py-12 sm:px-10 sm:py-16">
-    <main class="w-full max-w-2xl text-center">
+    <main class="w-full max-w-3xl text-center">
       <div class="inline-flex items-center gap-2.5">
         <span class="brand-fill grid place-items-center size-8 rounded-selector bg-primary text-primary-content font-bold shrink-0">T</span>
         <span class="text-lg font-semibold tracking-tight">TradeCommand</span>
       </div>
 
-      <h1 class="mt-10 text-[2.5rem] leading-[1.06] sm:text-6xl font-bold tracking-tight text-balance">
-        Quote the job.<br />
-        <span class="text-link">Invoice all of it.</span>
+      <p class="mt-5">
+        <span class="brand-fill inline-block rounded-selector bg-primary text-primary-content px-2.5 py-1 text-xs font-semibold uppercase tracking-wider">
+          Coming soon
+        </span>
+      </p>
+
+      <h1 class="mt-7 text-[2.5rem] leading-[1.06] sm:text-[3.5rem] lg:text-6xl font-bold tracking-tight text-balance">
+        AI-native job management<br />
+        <span class="text-link">for trades.</span>
       </h1>
 
       <p class="mt-6 mx-auto max-w-xl text-lg text-base-content/70 leading-relaxed text-pretty">
         For electricians, plumbers and builders. Leads, quotes, jobs, variations, purchase
-        orders, timesheets and invoices. The extra work you did in week three is still on
-        the bill in week six.
+        orders, timesheets and invoices — and an inbox that turns an enquiry into a lead
+        before you have read it.
       </p>
 
-      <a href={`${APP_URL}/session/new`} class="btn btn-primary btn-lg rounded-field px-9 mt-10">Sign in</a>
+      <p class="mt-10 text-base text-base-content/60">
+        Already have an account?
+        <a href={`${APP_URL}/session/new`} class="text-link font-semibold underline underline-offset-4 hover:no-underline">Sign in</a>
+      </p>
     </main>
 
     <footer class="mt-24 text-sm text-base-content/45">
@@ -36,7 +45,7 @@ const year = new Date().getFullYear();
 <style>
   /* Near-white warm paper with one soft coral glow behind the mark. The primary is a fill colour and
      this is the only place on the page it appears at any size — keep it faint, or the paper stops
-     reading as paper and the button loses the ground it needs to sit against. */
+     reading as paper and the coral badge loses the ground it needs to sit against. */
   .paper-grain {
     background-color: var(--color-base-100);
     background-image:
