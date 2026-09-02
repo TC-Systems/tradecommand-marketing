@@ -1,0 +1,50 @@
+---
+import Layout from "./Layout.astro";
+
+interface Props {
+  title: string;
+  description: string;
+  updated: string;
+}
+
+const { title, description, updated } = Astro.props;
+const year = new Date().getFullYear();
+---
+
+<Layout title={`${title} — TradeCommand`} description={description}>
+  <div class="min-h-dvh flex flex-col px-6 py-10 sm:px-10 sm:py-14">
+    <header class="w-full max-w-2xl mx-auto">
+      <a href="/" class="inline-flex items-center gap-2.5">
+        <span class="grid place-items-center size-8 rounded-selector bg-primary text-primary-content font-bold shrink-0">T</span>
+        <span class="text-lg font-semibold tracking-tight">TradeCommand</span>
+      </a>
+    </header>
+
+    <main class="legal w-full max-w-2xl mx-auto mt-12">
+      <h1 class="text-4xl font-bold tracking-tight text-balance">{title}</h1>
+      <p class="mt-3 text-sm text-base-content/60">Last updated {updated}</p>
+      <slot />
+    </main>
+
+    <footer class="w-full max-w-2xl mx-auto mt-24 text-sm text-base-content/45">
+      <nav class="flex flex-wrap gap-x-5 gap-y-2">
+        <a href="/privacy" class="hover:text-base-content">Privacy</a>
+        <a href="/terms" class="hover:text-base-content">Terms</a>
+        <a href="/data-deletion" class="hover:text-base-content">Data deletion</a>
+      </nav>
+      <p class="mt-4">&copy; {year} TC Systems Pty Ltd, ABN 95 699 724 028. Built in Australia.</p>
+    </footer>
+  </div>
+</Layout>
+
+<style is:global>
+  .legal h2 { margin-top: 2.5rem; font-size: 1.375rem; line-height: 1.25; font-weight: 700; letter-spacing: -0.01em; }
+  .legal h3 { margin-top: 1.75rem; font-size: 1.0625rem; font-weight: 600; }
+  .legal p { margin-top: 1rem; line-height: 1.7; color: color-mix(in oklch, var(--color-base-content) 82%, transparent); }
+  .legal ul { margin-top: 1rem; padding-left: 1.25rem; list-style: disc; }
+  .legal li { margin-top: 0.5rem; line-height: 1.65; color: color-mix(in oklch, var(--color-base-content) 82%, transparent); }
+  .legal li::marker { color: var(--color-primary); }
+  .legal a { color: var(--color-link, var(--color-primary-content)); font-weight: 600; text-decoration: underline; text-underline-offset: 4px; }
+  .legal a:hover { text-decoration: none; }
+  .legal strong { color: var(--color-base-content); }
+</style>
