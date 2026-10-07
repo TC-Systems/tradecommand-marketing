@@ -22,6 +22,8 @@ const dark = tone === "dark";
 const site = Astro.site!;
 // build.format "file" makes the pathname /privacy.html; every link says /privacy.
 const canonical = new URL(Astro.url.pathname.replace(/(index)?\.html$/, ""), site).toString();
+const image = new URL("/og.png", site).toString();
+const imageAlt = "TradeCommand: run the job, let the AI run the office. An enquiry turned into a lead for a person to approve.";
 
 const organization = {
   "@type": "Organization",
@@ -50,11 +52,11 @@ const graph = JSON.stringify({ "@context": "https://schema.org", "@graph": [orga
       description={description}
       canonical={canonical}
       openGraph={{
-        basic: { title, type: "website", image: new URL("/icon.png", site).toString(), url: canonical },
+        basic: { title, type: "website", image, url: canonical },
         optional: { description, siteName: "TradeCommand", locale: "en_AU" },
-        image: { alt: "The TradeCommand mark." },
+        image: { url: image, secureUrl: image, type: "image/png", width: 1200, height: 630, alt: imageAlt },
       }}
-      twitter={{ card: "summary" }}
+      twitter={{ card: "summary_large_image", title, description, image, imageAlt }}
     />
 
     <script is:inline type="application/ld+json" set:html={graph} />
