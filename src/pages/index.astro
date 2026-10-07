@@ -22,74 +22,74 @@ const duties = [
   {
     icon: "mail",
     when: "An enquiry lands in the inbox.",
-    then: "The bot reads it, checks whether the sender is already a client, and drafts the lead with the address and the trade.",
+    then: "The bot reads it, checks whether they’re already a client, and writes up the lead with the address and the trade.",
   },
   {
     icon: "file",
     when: "A supplier emails an invoice.",
-    then: "It reads the PDF, matches the purchase order, and drafts the bill costed to the right job.",
+    then: "It reads the PDF, matches it to your purchase order, and drafts the bill against the right job.",
   },
   {
     icon: "chat",
     when: "Someone on site sends a WhatsApp.",
-    then: "It finds the job they mean and files the photo, the note or the task where the office will see it.",
+    then: "It works out which job they mean and puts the photo, note or task on it, where the office will see it.",
   },
 ] as const;
 
 const modes = [
-  { name: "Off", body: "The bot does nothing." },
-  { name: "Ask me first", body: "It reads and decides, then waits for a person to approve each action." },
-  { name: "On", body: "It acts, and every action lands in a log you can read back." },
+  { name: "Off", body: "It does nothing." },
+  { name: "Ask me first", body: "It does the work, then waits for you to OK each step." },
+  { name: "On", body: "It gets on with it, and you can see everything it did." },
 ];
 
 const pipeline = [
-  { name: "Lead", body: "From the inbox, the phone or the website. Owned, staged, never lost in an email thread." },
-  { name: "Quote", body: "Priced from your products and trades, sent to the client to accept." },
-  { name: "Job", body: "Made from the quote it won. Crew, stages, tasks and files in one place." },
-  { name: "Variation", body: "Extra work priced and sent for approval before anyone picks up a tool." },
-  { name: "Invoice", body: "Sent to the client, paid, and posted to Xero against the job." },
+  { name: "Lead", body: "From email, a phone call or your website. Someone owns it, so it never dies in an inbox." },
+  { name: "Quote", body: "Built from your own price list and sent to the client to accept online." },
+  { name: "Job", body: "Starts from the accepted quote. Crew, tasks, photos and files all in one spot." },
+  { name: "Variation", body: "Extra work priced and approved by the client before anyone starts on it." },
+  { name: "Invoice", body: "Sent to the client, marked paid, and pushed to Xero against the job." },
 ];
 
 const supply = ["Purchase orders", "Supplier bills", "Stock", "Products", "Suppliers", "Job costing"];
 
 const site = [
-  { icon: "pin", title: "Clock in on the job", body: "Time lands against the job. Location is read only at the moment you clock in or out." },
-  { icon: "camera", title: "Photo sign-off", body: "A task can require a photo before it is signed off, so the office sees the work was done." },
-  { icon: "calendar", title: "Rosters and timesheets", body: "Publish the week's roster, approve timesheets a week at a time." },
-  { icon: "user", title: "A portal for the client", body: "Clients accept quotes, approve variations and answer selections without a phone call." },
+  { icon: "pin", title: "Clock on at the job", body: "Time goes straight onto the job. Your location is only checked the moment you clock on or off." },
+  { icon: "camera", title: "Photo sign-off", body: "A task can need a photo before it’s ticked off, so the office knows the work is done." },
+  { icon: "calendar", title: "Rosters and timesheets", body: "Send out the week’s roster, and approve a whole week of timesheets in one go." },
+  { icon: "user", title: "A portal for the client", body: "Clients accept quotes, approve variations and pick their fittings online, without a phone call." },
 ] as const;
 
 const integrations = [
-  { name: "Xero", src: "/integrations/xero.svg", body: "Invoices and bills post to your ledger, coded to the job." },
-  { name: "Deputy", icon: "clock", body: "Rosters and approved hours come across from Deputy." },
-  { name: "Microsoft 365", icon: "box", body: "Job files copy to OneDrive. Tasks sync with Planner. Outlook feeds the inbox." },
-  { name: "WhatsApp", icon: "phone", body: "Messages to your business number land in the inbox, and replies go back." },
+  { name: "Xero", src: "/integrations/xero.svg", body: "Invoices and bills go straight into Xero, against the right job." },
+  { name: "Deputy", icon: "clock", body: "Pulls in rosters and approved hours from Deputy." },
+  { name: "Microsoft 365", icon: "box", body: "Job files saved to OneDrive, tasks synced with Planner, and new work picked up from Outlook." },
+  { name: "WhatsApp", icon: "phone", body: "Messages to your business number come into TradeCommand, and you reply from there." },
 ] as const;
 
 const faqs = [
   {
     question: "What is TradeCommand?",
-    answer: "Job management for electricians, plumbers and builders. Leads, quotes, jobs, variations, purchase orders, timesheets and invoices in one app, with Claude doing the office work that piles up between them.",
+    answer: "Job management for electricians, plumbers and builders: leads, quotes, jobs, variations, purchase orders, timesheets and invoices in one app. The AI does the office work in between.",
   },
   {
     question: "Does the AI act without asking?",
-    answer: "Only if you let it. Each bot is Off, Ask me first, or On. In Ask me first it reads and decides exactly as it would on its own, and a person approves each action. That is how you find out whether to trust it.",
+    answer: "Only if you let it. Each bot is set to Off, Ask me first, or On. On Ask me first it does all the work and waits for your OK before anything happens. It’s the easy way to find out whether you trust it.",
   },
   {
     question: "Which AI does it use?",
-    answer: "Claude, by Anthropic. The text a bot needs is sent to Anthropic to get a result, and Anthropic does not train models on it. You can also connect Claude, or any assistant that supports MCP, to your business and ask it about your jobs.",
+    answer: "Claude, made by Anthropic. Only the text a bot needs is sent to Anthropic, and they don’t train their models on it. You can also connect Claude, or any assistant that supports MCP, and ask it about your jobs.",
   },
   {
     question: "Does it work on site?",
-    answer: "Yes. There is an app for iPhone and iPad that signs in to the same account. Your team clocks in, takes photos, ticks off tasks and gets notified about new jobs.",
+    answer: "Yes. The iPhone and iPad app uses the same login as the office. Your team clocks on, takes photos, ticks off tasks and hears about new jobs straight away.",
   },
   {
     question: "Do I still need Xero?",
-    answer: "Yes. TradeCommand is where the job is run, and Xero stays your books. Invoices and bills post to Xero, coded to the job, so your job-costing report there stays whole.",
+    answer: "Yes. TradeCommand runs the jobs and Xero stays your books. Invoices and bills go into Xero against the job, so your job costing there still adds up.",
   },
   {
     question: "When can I use it?",
-    answer: "TradeCommand is in early access with trade businesses in Australia. Request early access below and we will email you an invite code.",
+    answer: "Now, a few businesses at a time. Fill in the form below and we’ll email you an invite code.",
   },
 ];
 
@@ -97,7 +97,7 @@ const product = {
   "@type": "SoftwareApplication",
   name: "TradeCommand",
   url: "https://tradecommand.com.au/",
-  description: "AI-native job management for electricians, plumbers and builders, with Claude built in.",
+  description: "Job management for electricians, plumbers and builders, with AI that runs the office.",
   applicationCategory: "BusinessApplication",
   operatingSystem: "Web, iOS",
   publisher: { "@id": "https://tradecommand.com.au/#organization" },
@@ -136,7 +136,7 @@ const faqPage = {
           Run the job. <span class="text-brand">Let the AI run the office.</span>
         </h1>
         <p class="max-w-[520px] text-[17px] leading-[1.55] text-pretty text-fog-300 lg:text-xl">
-          Job management for electricians, plumbers and builders. Enquiries become leads, supplier invoices become bills, and nothing moves until a person says yes.
+          Job management for electricians, plumbers and builders. Enquiries become leads and supplier invoices become bills while you’re on the tools, and you decide what it does without asking.
         </p>
         <div class="flex flex-col gap-3.5 sm:flex-row sm:items-center lg:mt-2">
           <a href={EARLY_ACCESS} class="cta">
@@ -146,7 +146,7 @@ const faqPage = {
           <a href="#ai" class="cta-ghost hidden sm:inline-flex">See what it does</a>
         </div>
         <p class="-mt-1.5 text-center text-sm text-fog-400 sm:mt-0 sm:text-left lg:text-[15px]">
-          <strong class="text-white">Made in Australia</strong> for Australian trades. On the web, iPhone and iPad.
+          <strong class="text-white">Built in Coffs Harbour</strong> for Aussie trades. On the web, iPhone and iPad.
         </p>
       </div>
 
@@ -161,9 +161,9 @@ const faqPage = {
       <div class="wrap py-14 sm:py-24 lg:pt-[136px] lg:pb-36 flex flex-col gap-10 lg:gap-14">
         <div class="flex max-w-[900px] flex-col gap-5 lg:gap-[18px]">
           <p class="eyebrow text-brand">01 — AI in the office</p>
-          <h2 class="heading-section">The paperwork, done before you’ve read the email.</h2>
+          <h2 class="heading-section">Admin sorted before you’re back in the ute.</h2>
           <p class="max-w-[680px] text-[17px] leading-[1.6] text-pretty text-fog-300 lg:text-[19px]">
-            Add a bot to your business and give it a job. It is a member of your team with its own name, and it can only do what its role allows.
+            Give a bot a job, like reading the inbox. It joins your team under its own name and can only do what you let it.
           </p>
         </div>
 
@@ -187,7 +187,7 @@ const faqPage = {
         <div class="grid gap-6 rounded-[20px] border border-brand/25 bg-ground-700 p-6 sm:p-8 lg:grid-cols-[minmax(0,0.8fr)_minmax(0,1.2fr)] lg:items-center lg:gap-12 lg:p-10">
           <div class="flex flex-col gap-3">
             <h3 class="font-display text-[26px] leading-[1.1] font-bold tracking-[-0.02em] lg:text-[32px]">You decide how far it goes.</h3>
-            <p class="text-[15px] leading-[1.6] text-fog-300 lg:text-base">Every bot answers to a setting, and every action it takes keeps the exact words the model saw.</p>
+            <p class="text-[15px] leading-[1.6] text-fog-300 lg:text-base">Every bot has a setting, and everything it does is logged with exactly what it read.</p>
           </div>
           <ol class="grid gap-2.5 sm:grid-cols-3">
             {modes.map((mode, i) => (
@@ -201,7 +201,7 @@ const faqPage = {
 
         <div class="flex flex-col gap-4 sm:flex-row sm:items-center sm:justify-between sm:gap-8">
           <p class="max-w-[640px] text-[17px] leading-[1.55] text-fog-200">
-            <strong class="text-white">Bring your own assistant, too.</strong> Connect Claude, or any assistant that supports MCP, and ask it which invoices are overdue or what’s booked for Thursday.
+            <strong class="text-white">Prefer your own AI?</strong> Connect Claude, or any assistant that supports MCP, and ask it which invoices are overdue or who’s booked in for Thursday.
           </p>
           <ul class="flex flex-wrap gap-2">
             <li class="flex items-center gap-2.5 rounded-full bg-white py-1.5 pr-4 pl-1.5 text-[15px] font-semibold text-ink-900">
@@ -221,9 +221,9 @@ const faqPage = {
       <div class="wrap py-14 sm:py-24 lg:pt-[136px] lg:pb-36 flex flex-col gap-10 lg:gap-14">
         <div class="flex max-w-[900px] flex-col gap-5 lg:gap-[18px]">
           <p class="eyebrow text-brand-700">02 — Lead to paid</p>
-          <h2 class="heading-section">One job, from the first call to the last payment.</h2>
+          <h2 class="heading-section">From the first phone call to getting paid.</h2>
           <p class="max-w-[680px] text-[17px] leading-[1.6] text-ink-600 lg:text-[19px]">
-            Each step links to the one before it and copies nothing, so the job always knows the quote it came from and the variations it took on.
+            Each step links back to the one before, so the job always shows the quote it came from and every variation since.
           </p>
         </div>
 
@@ -239,8 +239,8 @@ const faqPage = {
 
         <div class="flex flex-col gap-4 rounded-2xl border border-line bg-white p-5 sm:flex-row sm:items-center sm:justify-between sm:gap-8 sm:px-7 sm:py-6">
           <div class="flex flex-col gap-1">
-            <h3 class="font-display text-xl font-bold tracking-[-0.02em]">And everything the job buys.</h3>
-            <p class="text-sm leading-[1.6] text-ink-500">A received order seeds the job’s cost. An approved bill lands on it.</p>
+            <h3 class="font-display text-xl font-bold tracking-[-0.02em]">Plus everything the job needs.</h3>
+            <p class="text-sm leading-[1.6] text-ink-500">Orders and supplier bills land on the job, so you can see what it’s really costing you.</p>
           </div>
           <ul class="flex flex-wrap gap-2 sm:justify-end">
             {supply.map((item) => <li class="rounded-full bg-chip px-3 py-1.5 text-sm text-ink-700">{item}</li>)}
@@ -254,7 +254,7 @@ const faqPage = {
         <div class="flex flex-col gap-5 lg:sticky lg:top-12 lg:gap-[18px] lg:self-start">
           <p class="eyebrow text-brand-700">03 — On site</p>
           <h2 class="heading-section lg:text-[52px] lg:leading-[1.04]">Built for the ute, not the desk.</h2>
-          <p class="text-[17px] leading-[1.6] text-ink-600 lg:text-[19px]">The app for iPhone and iPad is the same account the office uses, with notifications when a job, a message or a task is yours.</p>
+          <p class="text-[17px] leading-[1.6] text-ink-600 lg:text-[19px]">The iPhone and iPad app runs on the same account as the office, and pings you when a job, message or task is yours.</p>
         </div>
         <ul class="grid gap-3 sm:grid-cols-2 sm:gap-4">
           {site.map((item) => (
@@ -274,7 +274,7 @@ const faqPage = {
       <div class="wrap py-14 sm:py-24 lg:py-32 flex flex-col gap-10 lg:gap-14">
         <div class="flex max-w-[860px] flex-col gap-5 lg:gap-[18px]">
           <p class="eyebrow text-brand">04 — Connects</p>
-          <h2 class="heading-section">Keeps the tools you already pay for.</h2>
+          <h2 class="heading-section">Works with what you already use.</h2>
         </div>
         <ul class="grid gap-3 sm:grid-cols-2 sm:gap-4 lg:grid-cols-4">
           {integrations.map((item) => (
@@ -312,10 +312,10 @@ const faqPage = {
         <div class="flex flex-col gap-6">
           <p class="eyebrow text-brand">Early access</p>
           <h2 class="font-display text-[44px] leading-none font-extrabold tracking-[-0.035em] text-balance sm:text-6xl lg:text-[68px]">
-            Spend the evening on the tools. <span class="text-brand">Not the inbox.</span>
+            On the tools all day. <span class="text-brand">Not on the admin all night.</span>
           </h2>
           <p class="max-w-[480px] text-[17px] leading-[1.6] text-pretty text-fog-300 lg:text-[19px]">
-            TradeCommand is opening to Australian trade businesses a few at a time. Tell us about yours and we’ll send you an invite code.
+            We’re letting Aussie trade businesses in a few at a time. Tell us about yours and we’ll send you an invite code.
           </p>
           <p class="text-sm text-fog-400 lg:text-[15px]">
             Already have an account? <a href={SIGN_IN} class="font-semibold text-white underline underline-offset-4 hover:no-underline">Sign in</a>
