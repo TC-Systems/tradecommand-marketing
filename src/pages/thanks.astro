@@ -1,0 +1,14 @@
+---
+import Layout from "../layouts/Layout.astro";
+import Brand from "../components/Brand.astro";
+---
+
+<!-- Where the early-access form lands when it posts without script. -->
+<Layout tone="dark" noindex title="You’re on the list — TradeCommand" description="Your request for early access to TradeCommand is in.">
+  <div class="dots min-h-dvh bg-ground text-white flex flex-col items-center justify-center gap-8 px-6 text-center">
+    <a href="/" class="inline-flex items-center gap-2.5"><Brand /></a>
+    <h1 class="font-display text-[44px] leading-none font-extrabold tracking-[-0.035em] sm:text-6xl">You’re on the list.</h1>
+    <p class="max-w-[440px] text-[17px] leading-[1.6] text-fog-300">We’ll email you an invite code as soon as there’s a spot. Keep an eye on your inbox.</p>
+    <a href="/" class="cta-ghost">Back to TradeCommand</a>
+  </div>
+</Layout>
