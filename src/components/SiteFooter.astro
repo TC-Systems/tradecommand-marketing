@@ -1,0 +1,24 @@
+---
+import Brand from "./Brand.astro";
+
+const year = new Date().getFullYear();
+---
+
+<footer class="bg-ground-950 text-fog-400 border-t border-white/8">
+  <div class="wrap py-10 flex flex-col gap-6 md:flex-row md:items-center md:justify-between">
+    <div class="flex flex-col gap-2">
+      <a href="/" class="inline-flex items-center gap-2.5 self-start text-white">
+        <Brand size="sm" />
+      </a>
+      <p class="text-[13px]">A TC Systems product, built in Coffs Harbour, Australia.</p>
+      <p class="text-xs text-fog-400/80">&copy; {year} TC Systems Pty Ltd, ABN 95 699 724 028</p>
+    </div>
+    <nav class="flex flex-wrap gap-x-7 gap-y-3 text-sm">
+      <a href="/support" class="hover:text-white">Support</a>
+      <a href="/privacy" class="hover:text-white">Privacy</a>
+      <a href="/terms" class="hover:text-white">Terms</a>
+      <a href="/data-deletion" class="hover:text-white">Data deletion</a>
+      <a href="mailto:hello@tradecommand.com.au" class="hover:text-white">hello@tradecommand.com.au</a>
+    </nav>
+  </div>
+</footer>

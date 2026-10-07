@@ -1,0 +1,15 @@
+---
+interface Props {
+  size?: "sm" | "md";
+}
+
+const { size = "md" } = Astro.props;
+const box = size === "sm" ? "size-[26px] rounded-md" : "size-[30px] lg:size-[34px] rounded-[7px]";
+const glyph = size === "sm" ? "size-[15px]" : "size-[17px] lg:size-5";
+const word = size === "sm" ? "text-[17px]" : "text-[19px] lg:text-[21px]";
+---
+
+<span class={`grid place-items-center shrink-0 bg-brand ${box}`}>
+  <svg class={glyph} viewBox="0 0 512 512" aria-hidden="true"><path d="M128 140h256v62H288v232h-64V202h-96z" fill="#37120c" /></svg>
+</span>
+<span class={`font-display font-bold tracking-[-0.02em] ${word}`}>TradeCommand</span>

@@ -20,6 +20,26 @@
   unicode-range: U+0100-02BA, U+02BD-02C5, U+02C7-02CC, U+02CE-02D7, U+02DD-02FF, U+0304, U+0308, U+0329, U+1D00-1DBF, U+1E00-1E9F, U+1EF2-1EFF, U+2020, U+20A0-20AB, U+20AD-20C0, U+2113, U+2C60-2C7F, U+A720-A7FF;
 }
 
+/* Display and mono faces, vendored from tradiebridge-marketing: the two sites are one family. The opsz
+   file, not the smaller wght one: display sizes need the optical-size axis to draw as designed. */
+@font-face {
+  font-family: "Bricolage Grotesque";
+  font-style: normal;
+  font-weight: 200 800;
+  font-display: swap;
+  src: url("/bricolage-grotesque-latin.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
+@font-face {
+  font-family: "JetBrains Mono";
+  font-style: normal;
+  font-weight: 100 800;
+  font-display: swap;
+  src: url("/jetbrains-mono-latin.woff2") format("woff2");
+  unicode-range: U+0000-00FF, U+0131, U+0152-0153, U+02BB-02BC, U+02C6, U+02DA, U+02DC, U+0304, U+0308, U+0329, U+2000-206F, U+20AC, U+2122, U+2191, U+2193, U+2212, U+2215, U+FEFF, U+FFFD;
+}
+
 /* "Flare Light", copied token for token from the app's `tradecommand` theme. The two rules the
    palette cannot survive without are below it: the primary is a FILL at 74% lightness, so it never
    carries text, and a filled control needs an absolute darkened border to clear 3:1 on this paper. */
@@ -78,6 +98,152 @@
 
   --font-sans: "Figtree", ui-sans-serif, system-ui, sans-serif;
   --default-font-family: "Figtree", ui-sans-serif, system-ui, sans-serif;
+  --font-display: "Bricolage Grotesque", "Figtree", ui-sans-serif, system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", ui-monospace, SFMono-Regular, Menlo, monospace;
+
+  /* The marketing page's own scale, after tradiebridge-marketing's, warmed to the app icon's coral
+     (#fb836d on #37120c). The ground is the icon's ink lifted just off black. */
+  --color-ground: #1d1210;
+  --color-ground-950: #150c0a;
+  --color-ground-800: #251714;
+  --color-ground-700: #2e1d19;
+
+  --color-brand: #fb836d;
+  --color-brand-400: #fc9b89;
+  --color-brand-ink: #37120c;
+  --color-brand-50: #fdf1ed;
+  --color-brand-100: #fadfd7;
+  --color-brand-300: #f4b5a6;
+  --color-brand-600: #d65a41;
+  --color-brand-700: #b0432e;
+
+  --color-fog-100: #f7ede9;
+  --color-fog-200: #ecdbd5;
+  --color-fog-300: #d0bab2;
+  --color-fog-400: #a48e86;
+
+  --color-mist: #f8f4f2;
+  --color-chip: #f3ebe8;
+  --color-line: #ebe0dc;
+  --color-line-soft: #f0e7e3;
+  --color-line-field: #e3d6d1;
+
+  --color-ink-900: #1f1311;
+  --color-ink-800: #2a1c19;
+  --color-ink-700: #3f2f2b;
+  --color-ink-600: #5f4d48;
+  --color-ink-500: #76635d;
+}
+
+@utility wrap {
+  width: 100%;
+  max-width: 1440px;
+  margin-inline: auto;
+  padding-inline: 1rem;
+
+  @media (width >= 40rem) {
+    padding-inline: 2rem;
+  }
+
+  @media (width >= 64rem) {
+    padding-inline: 3rem;
+  }
+
+  @media (width >= 80rem) {
+    padding-inline: 6rem;
+  }
+}
+
+@utility dots {
+  background-image: radial-gradient(color-mix(in srgb, var(--color-brand) 14%, transparent) 1px, transparent 1px);
+  background-size: 24px 24px;
+
+  @media (width >= 64rem) {
+    background-size: 28px 28px;
+  }
+}
+
+@utility heading-section {
+  font-family: var(--font-display);
+  font-size: 2.25rem;
+  line-height: 1.04;
+  font-weight: 800;
+  letter-spacing: -0.03em;
+  text-wrap: balance;
+
+  @media (width >= 40rem) {
+    font-size: 3rem;
+  }
+
+  @media (width >= 64rem) {
+    font-size: 3.75rem;
+    line-height: 1.02;
+  }
+}
+
+@utility eyebrow {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+
+  @media (width >= 64rem) {
+    font-size: 0.8125rem;
+  }
+}
+
+@utility cta {
+  display: inline-flex;
+  min-height: 3.5rem;
+  align-items: center;
+  justify-content: center;
+  gap: 0.625rem;
+  padding-inline: 1.75rem;
+  border-radius: 10px;
+  background: var(--color-brand);
+  color: var(--color-brand-ink);
+  font-size: 1.0625rem;
+  font-weight: 700;
+  transition: background-color 150ms;
+
+  &:hover {
+    background: var(--color-brand-400);
+  }
+}
+
+@utility cta-ghost {
+  display: inline-flex;
+  min-height: 3.5rem;
+  align-items: center;
+  justify-content: center;
+  padding-inline: 1.5rem;
+  border: 1px solid rgb(255 255 255 / 0.22);
+  border-radius: 10px;
+  color: #fff;
+  font-size: 1.0625rem;
+  font-weight: 600;
+  transition: border-color 150ms, background-color 150ms;
+
+  &:hover {
+    border-color: rgb(255 255 255 / 0.45);
+    background: rgb(255 255 255 / 0.04);
+  }
+}
+
+@keyframes pulse-ring {
+  0% { box-shadow: 0 0 0 0 color-mix(in srgb, var(--color-brand) 55%, transparent); }
+  70% { box-shadow: 0 0 0 10px transparent; }
+  100% { box-shadow: 0 0 0 0 transparent; }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .pulse { animation: pulse-ring 2s ease-out infinite; }
+}
+
+:focus-visible {
+  outline: 2px solid var(--link);
+  outline-offset: 3px;
 }
 
 /* DaisyUI derives a button's border by darkening its own fill PROPORTIONALLY, which is nothing at

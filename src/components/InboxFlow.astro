@@ -1,0 +1,266 @@
+---
+import Icon from "./Icon.astro";
+
+const channels = [
+  { key: "email", name: "Email", icon: "mail" },
+  { key: "whatsapp", name: "WhatsApp", icon: "phone" },
+  { key: "pdf", name: "Supplier PDFs", icon: "file" },
+] as const;
+
+// Invented people, places and figures. The shapes are the app's: a lead, a drafted bill, a task.
+const scenarios = [
+  {
+    channel: "email",
+    from: "Priya N.",
+    via: "Email",
+    message: "Hi, our switchboard keeps tripping since the storm. Could someone come out this week? 14 Banksia St, Sawtell.",
+    tool: "Read enquiry · Checked clients · No match",
+    kind: "New lead",
+    title: "Switchboard tripping, 14 Banksia St",
+    meta: "New client · Electrical · Owner: Sam",
+  },
+  {
+    channel: "pdf",
+    from: "Ironbark Supply",
+    via: "Invoice PDF",
+    message: "Invoice INV-20817 for your order PO-1186 is attached.",
+    tool: "Read PDF · Matched PO-1186 · Job 2291",
+    kind: "Draft bill",
+    title: "Ironbark Supply · $1,284.50",
+    meta: "Costed to Job 2291 · Bathroom renovation",
+  },
+  {
+    channel: "whatsapp",
+    from: "Dan, site supervisor",
+    via: "WhatsApp",
+    message: "Client wants 4 more downlights in the kitchen at Moonee Beach. Can you price it?",
+    tool: "Matched Job 2310 · Moonee Beach",
+    kind: "New task",
+    title: "Price 4 extra kitchen downlights",
+    meta: "On Job 2310 · Variation to follow",
+  },
+];
+
+const fanDown = ["M50 0 C 50 30, 150 30, 150 60", "M150 0 L 150 60", "M250 0 C 250 30, 150 30, 150 60"];
+---
+
+<figure class="flex flex-col" aria-label="Email, WhatsApp and supplier invoices arrive, and TradeCommand's inbox bot turns each into a lead, a bill or a task for a person to approve">
+  <ul class="grid grid-cols-3 gap-2 sm:gap-3">
+    {channels.map((channel) => (
+      <li data-channel={channel.key} class="tile flex flex-col items-center gap-2 rounded-2xl border border-white/12 bg-white/4 px-2 py-3.5 text-center sm:px-3">
+        <span class="grid size-10 shrink-0 place-items-center rounded-[10px] bg-white text-ink-900">
+          <Icon name={channel.icon} class="size-5" stroke={1.9} />
+        </span>
+        <span class="text-sm font-bold leading-tight sm:text-[15px]">{channel.name}</span>
+      </li>
+    ))}
+  </ul>
+
+  <svg class="h-10 w-full sm:h-12" viewBox="0 0 300 60" preserveAspectRatio="none" aria-hidden="true">
+    {fanDown.map((d) => <path d={d} class="track" vector-effect="non-scaling-stroke" />)}
+    {fanDown.map((d) => <path d={d} class="flow" vector-effect="non-scaling-stroke" />)}
+  </svg>
+
+  <div class="flex items-center justify-center gap-3 self-center rounded-2xl border border-brand/35 bg-ground-700 py-3 pr-5 pl-3">
+    <span class="grid size-9 shrink-0 place-items-center rounded-[9px] bg-brand">
+      <svg class="size-5" viewBox="0 0 512 512" aria-hidden="true"><path d="M128 140h256v62H288v232h-64V202h-96z" fill="#37120c" /></svg>
+    </span>
+    <span class="font-display text-base font-bold tracking-[-0.02em]">TradeCommand</span>
+    <span class="flex items-center gap-1.5 rounded-full bg-white/8 px-2.5 py-1 text-xs font-semibold text-fog-200">
+      <img src="/assistants/claude.svg" alt="" class="size-3.5" width="14" height="14" />Claude
+    </span>
+  </div>
+
+  <svg class="h-8 w-full sm:h-10" viewBox="0 0 300 40" preserveAspectRatio="none" aria-hidden="true">
+    <path d="M150 0 L 150 40" class="track" vector-effect="non-scaling-stroke" />
+    <path d="M150 0 L 150 40" class="flow" vector-effect="non-scaling-stroke" />
+  </svg>
+
+  <div data-inbox class="overflow-hidden rounded-[18px] bg-white text-ink-800 shadow-[0_30px_60px_-24px_rgba(0,0,0,0.8),0_0_0_1px_rgba(251,131,109,0.35)] sm:rounded-[20px]">
+    <div class="flex items-center justify-between gap-3 border-b border-line-soft px-4 py-3 sm:px-[22px] sm:py-4">
+      <p class="flex items-center gap-2.5 text-sm font-bold sm:text-[15px]">
+        <Icon name="spark" class="hidden sm:block size-5 text-brand-700" />
+        Office bot
+      </p>
+      <p class="flex items-center gap-1.5 rounded-full bg-brand-50 px-[9px] py-1 text-xs font-semibold text-brand-700 sm:gap-2 sm:px-[11px] sm:py-[5px] sm:text-[13px]">
+        <span class="pulse size-1.5 sm:size-[7px] rounded-full bg-brand-600"></span>
+        Ask me first
+      </p>
+    </div>
+    <div class="grid p-4 sm:p-6">
+      {scenarios.map((s) => (
+        <div class="scene flex flex-col gap-3" data-lit={s.channel}>
+          <div data-part="message" class="part flex flex-col gap-1.5 rounded-[14px] border border-line-soft bg-mist px-3.5 py-3 sm:px-4">
+            <p class="flex items-center justify-between gap-2 text-xs font-semibold text-ink-500 sm:text-[13px]">
+              <span class="text-ink-800">{s.from}</span>
+              <span>{s.via}</span>
+            </p>
+            <p class="text-[15px] leading-[1.45] sm:text-base">{s.message}</p>
+          </div>
+          <p data-part="tool" class="part self-start inline-flex items-center gap-2 rounded-lg border border-line-field px-[9px] py-[5px] font-mono text-[11px] text-ink-600 sm:px-2.5 sm:py-1.5 sm:text-xs">
+            <span class="working size-1.5 shrink-0 rounded-full bg-brand-600"></span>
+            <span class="done hidden shrink-0 sm:block"><Icon name="check" class="size-3.5" /></span>
+            {s.tool}
+          </p>
+          <div data-part="proposal" class="part flex flex-col gap-3 rounded-[14px] border border-brand-100 bg-brand-50/60 p-3.5 sm:flex-row sm:items-center sm:justify-between sm:p-4">
+            <div class="flex min-w-0 flex-col gap-0.5">
+              <p class="font-mono text-[11px] font-semibold tracking-[0.06em] text-brand-700 uppercase sm:text-xs">{s.kind}</p>
+              <p class="font-display text-[17px] leading-tight font-bold tracking-[-0.01em]">{s.title}</p>
+              <p class="text-[13px] text-ink-600 sm:text-sm">{s.meta}</p>
+            </div>
+            <span data-approve class="approve inline-flex shrink-0 items-center justify-center gap-1.5 self-start rounded-lg bg-ground px-3.5 py-2 text-sm font-bold text-white sm:self-center">
+              <span class="label-approve">Approve</span>
+              <span class="label-done hidden items-center gap-1.5"><Icon name="check" class="size-4" stroke={2.4} />Approved</span>
+            </span>
+          </div>
+        </div>
+      ))}
+    </div>
+  </div>
+</figure>
+
+<script>
+  const inbox = document.querySelector<HTMLElement>("[data-inbox]");
+  if (inbox && matchMedia("(prefers-reduced-motion: no-preference)").matches) play(inbox);
+
+  async function play(inbox: HTMLElement) {
+    const sleep = (ms: number) => new Promise((resolve) => setTimeout(resolve, ms));
+    const scenes = [...inbox.querySelectorAll<HTMLElement>(".scene")];
+    const tiles = [...document.querySelectorAll<HTMLElement>("[data-channel]")];
+
+    inbox.classList.add("is-live");
+
+    for (let i = 0; ; i = (i + 1) % scenes.length) {
+      const scene = scenes[i];
+      const part = (name: string) => scene.querySelector<HTMLElement>(`[data-part=${name}]`)!;
+      const approve = scene.querySelector<HTMLElement>("[data-approve]")!;
+
+      await sleep(300);
+      tiles.forEach((tile) => tile.classList.toggle("lit", tile.dataset.channel === scene.dataset.lit));
+      scene.classList.add("on");
+      part("message").classList.add("on");
+      await sleep(900);
+
+      part("tool").classList.add("on", "busy");
+      await sleep(1100);
+      part("tool").classList.remove("busy");
+      await sleep(200);
+
+      part("proposal").classList.add("on");
+      await sleep(1600);
+
+      approve.classList.add("pressed");
+      await sleep(160);
+      approve.classList.remove("pressed");
+      approve.classList.add("approved");
+      await sleep(2600);
+
+      tiles.forEach((tile) => tile.classList.remove("lit"));
+      scene.classList.remove("on");
+      await sleep(350);
+      scene.querySelectorAll(".on").forEach((el) => el.classList.remove("on"));
+      approve.classList.remove("approved");
+    }
+  }
+</script>
+
+<style>
+  .track,
+  .flow {
+    fill: none;
+    stroke-width: 2;
+    stroke-linecap: round;
+  }
+
+  .track {
+    stroke: color-mix(in srgb, white 12%, transparent);
+  }
+
+  .flow {
+    stroke: var(--color-brand);
+    stroke-dasharray: 2 14;
+  }
+
+  .tile {
+    transition: border-color 0.3s, background-color 0.3s;
+  }
+
+  .tile.lit {
+    border-color: var(--color-brand);
+    background-color: color-mix(in srgb, var(--color-brand) 14%, transparent);
+  }
+
+  /* Stacked in one cell so the card keeps the tallest scene's height and never jumps. */
+  .scene {
+    grid-area: 1 / 1;
+  }
+
+  .scene:not(:first-child) {
+    visibility: hidden;
+  }
+
+  .working {
+    display: none;
+  }
+
+  .approve {
+    transition: transform 0.15s, background-color 0.25s;
+  }
+
+  .approve.pressed {
+    transform: scale(0.92);
+  }
+
+  .approve.approved {
+    background-color: var(--color-brand-700);
+  }
+
+  .approve.approved .label-approve {
+    display: none;
+  }
+
+  .approve.approved .label-done {
+    display: inline-flex;
+  }
+
+  [data-inbox].is-live .scene {
+    visibility: hidden;
+    opacity: 0;
+    transition: opacity 0.3s, visibility 0.3s;
+  }
+
+  [data-inbox].is-live .scene.on {
+    visibility: visible;
+    opacity: 1;
+  }
+
+  [data-inbox].is-live .part {
+    opacity: 0;
+    transform: translateY(6px);
+    transition: opacity 0.3s, transform 0.3s;
+  }
+
+  [data-inbox].is-live .part.on {
+    opacity: 1;
+    transform: none;
+  }
+
+  [data-inbox].is-live .busy .working {
+    display: block;
+    animation: pulse-ring 1s ease-out infinite;
+  }
+
+  [data-inbox].is-live .busy .done {
+    display: none;
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .flow {
+      animation: flow 1.4s linear infinite;
+    }
+  }
+
+  @keyframes flow {
+    to { stroke-dashoffset: -16; }
+  }
+</style>
