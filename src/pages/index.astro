@@ -2,12 +2,13 @@
 import Layout from "../layouts/Layout.astro";
 import Brand from "../components/Brand.astro";
 import Icon from "../components/Icon.astro";
+import EarlyAccessForm from "../components/EarlyAccessForm.astro";
 import InboxFlow from "../components/InboxFlow.astro";
 import SiteFooter from "../components/SiteFooter.astro";
 
 const APP_URL = "https://app.tradecommand.com.au";
 const SIGN_IN = `${APP_URL}/session/new`;
-const EARLY_ACCESS = "mailto:hello@tradecommand.com.au?subject=Early%20access%20to%20TradeCommand";
+const EARLY_ACCESS = "#early-access";
 
 const nav = [
   { href: "#ai", label: "AI" },
@@ -88,7 +89,7 @@ const faqs = [
   },
   {
     question: "When can I use it?",
-    answer: "TradeCommand is in early access with trade businesses in Australia. Email us and we will set you up.",
+    answer: "TradeCommand is in early access with trade businesses in Australia. Request early access below and we will email you an invite code.",
   },
 ];
 
@@ -309,18 +310,21 @@ const faqPage = {
       </div>
     </section>
 
-    <section class="dots bg-ground text-white [--link:var(--color-brand)]">
-      <div class="wrap py-20 lg:py-[120px] flex flex-col items-center gap-7 text-center">
-        <h2 class="max-w-[900px] font-display text-[44px] leading-none font-extrabold tracking-[-0.035em] text-balance sm:text-6xl lg:text-[72px]">
-          Spend the evening on the tools. <span class="text-brand">Not the inbox.</span>
-        </h2>
-        <div class="flex w-full flex-col gap-3.5 sm:w-auto sm:flex-row sm:items-center">
-          <a href={EARLY_ACCESS} class="cta">
-            Get early access
-            <Icon name="arrow" class="size-[18px]" stroke={2.2} />
-          </a>
-          <a href={SIGN_IN} class="cta-ghost">Sign in</a>
+    <section id="early-access" class="dots scroll-mt-6 bg-ground text-white [--link:var(--color-brand)]">
+      <div class="wrap py-20 lg:py-[120px] grid gap-10 lg:grid-cols-[minmax(0,0.9fr)_minmax(0,1.1fr)] lg:items-center lg:gap-16">
+        <div class="flex flex-col gap-6">
+          <p class="eyebrow text-brand">Early access</p>
+          <h2 class="font-display text-[44px] leading-none font-extrabold tracking-[-0.035em] text-balance sm:text-6xl lg:text-[68px]">
+            Spend the evening on the tools. <span class="text-brand">Not the inbox.</span>
+          </h2>
+          <p class="max-w-[480px] text-[17px] leading-[1.6] text-pretty text-fog-300 lg:text-[19px]">
+            TradeCommand is opening to Australian trade businesses a few at a time. Tell us about yours and we’ll send you an invite code.
+          </p>
+          <p class="text-sm text-fog-400 lg:text-[15px]">
+            Already have an account? <a href={SIGN_IN} class="font-semibold text-white underline underline-offset-4 hover:no-underline">Sign in</a>
+          </p>
         </div>
+        <EarlyAccessForm />
       </div>
     </section>
   </main>

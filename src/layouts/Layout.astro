@@ -6,6 +6,7 @@ interface Props {
   title?: string;
   description?: string;
   tone?: "light" | "dark";
+  noindex?: boolean;
   schema?: Record<string, unknown>[];
 }
 
@@ -14,6 +15,7 @@ const {
   description =
     "Job management for electricians, plumbers and builders, with Claude built in. Leads, quotes, jobs, variations, purchase orders, timesheets and invoices, and an inbox that turns an enquiry into a lead.",
   tone = "light",
+  noindex = false,
   schema = [],
 } = Astro.props;
 
@@ -51,6 +53,7 @@ const graph = JSON.stringify({ "@context": "https://schema.org", "@graph": [orga
       title={title}
       description={description}
       canonical={canonical}
+      noindex={noindex}
       openGraph={{
         basic: { title, type: "website", image, url: canonical },
         optional: { description, siteName: "TradeCommand", locale: "en_AU" },

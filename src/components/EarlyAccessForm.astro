@@ -1,0 +1,196 @@
+---
+// Posts to the Rails app, which keeps the request and emails the admins (EarlyAccessRequestsController).
+// With script it posts by fetch and answers here; without, the app redirects to /thanks. The field
+// names and the two option lists mirror EarlyAccessRequest::TRADES and TEAM_SIZES: change both together.
+// PUBLIC_EARLY_ACCESS_URL points a local build at a local app (http://localhost:3700/early-access).
+const ACTION = import.meta.env.PUBLIC_EARLY_ACCESS_URL ?? "https://app.tradecommand.com.au/early-access";
+
+const trades = [
+  { value: "electrical", label: "Electrical" },
+  { value: "plumbing", label: "Plumbing" },
+  { value: "building", label: "Building" },
+  { value: "other", label: "Another trade" },
+];
+
+const teamSizes = [
+  { value: "solo", label: "Just me" },
+  { value: "small", label: "2–5" },
+  { value: "medium", label: "6–20" },
+  { value: "large", label: "21 or more" },
+];
+
+const field = "w-full rounded-[10px] border border-line-field bg-white px-3.5 py-3 text-base text-ink-900 placeholder:text-ink-500/70 focus:border-brand-600 focus:outline-none focus:ring-2 focus:ring-brand/30";
+const label = "text-sm font-semibold text-ink-800";
+---
+
+<div data-early-access class="rounded-[20px] bg-white p-5 text-ink-900 shadow-[0_30px_60px_-24px_rgba(0,0,0,0.8),0_0_0_1px_rgba(251,131,109,0.35)] sm:p-8">
+  <form action={ACTION} method="post" class="flex flex-col gap-4" novalidate data-form>
+    <div class="grid gap-4 sm:grid-cols-2">
+      <label class="flex flex-col gap-1.5">
+        <span class={label}>Your name</span>
+        <input class={field} name="early_access_request[name]" autocomplete="name" required maxlength="200" />
+        <span data-error="name" class="hidden text-sm text-error"></span>
+      </label>
+      <label class="flex flex-col gap-1.5">
+        <span class={label}>Business name</span>
+        <input class={field} name="early_access_request[business_name]" autocomplete="organization" required maxlength="200" />
+        <span data-error="business_name" class="hidden text-sm text-error"></span>
+      </label>
+      <label class="flex flex-col gap-1.5">
+        <span class={label}>Email</span>
+        <input class={field} type="email" name="early_access_request[email_address]" autocomplete="email" required maxlength="320" />
+        <span data-error="email_address" class="hidden text-sm text-error"></span>
+      </label>
+      <label class="flex flex-col gap-1.5">
+        <span class={label}>Mobile <span class="font-normal text-ink-500">(optional)</span></span>
+        <input class={field} type="tel" name="early_access_request[phone]" autocomplete="tel" maxlength="50" />
+        <span data-error="phone" class="hidden text-sm text-error"></span>
+      </label>
+    </div>
+
+    <fieldset class="flex flex-col gap-2">
+      <legend class={`${label} mb-2`}>Trade</legend>
+      <div class="flex flex-wrap gap-2">
+        {trades.map((trade) => (
+          <label class="choice">
+            <input type="radio" name="early_access_request[trade]" value={trade.value} required class="sr-only" />
+            <span>{trade.label}</span>
+          </label>
+        ))}
+      </div>
+      <span data-error="trade" class="hidden text-sm text-error"></span>
+    </fieldset>
+
+    <fieldset class="flex flex-col gap-2">
+      <legend class={`${label} mb-2`}>Team size</legend>
+      <div class="flex flex-wrap gap-2">
+        {teamSizes.map((size) => (
+          <label class="choice">
+            <input type="radio" name="early_access_request[team_size]" value={size.value} required class="sr-only" />
+            <span>{size.label}</span>
+          </label>
+        ))}
+      </div>
+      <span data-error="team_size" class="hidden text-sm text-error"></span>
+    </fieldset>
+
+    <label class="flex flex-col gap-1.5">
+      <span class={label}>What do you run the business on today? <span class="font-normal text-ink-500">(optional)</span></span>
+      <textarea class={`${field} min-h-24`} name="early_access_request[runs_on]" rows="3" maxlength="2000" placeholder="Simpro, ServiceM8, spreadsheets, a whiteboard…"></textarea>
+      <span data-error="runs_on" class="hidden text-sm text-error"></span>
+    </label>
+
+    <!-- Left empty by people. A bot that fills it is thanked and forgotten. -->
+    <div class="absolute -left-[9999px] h-px w-px overflow-hidden" aria-hidden="true">
+      <label>Website <input name="early_access_request[website]" tabindex="-1" autocomplete="off" /></label>
+    </div>
+
+    <p data-error="base" class="hidden rounded-[10px] bg-brand-50 px-4 py-3 text-sm text-brand-700"></p>
+
+    <button type="submit" data-submit class="cta mt-1 w-full disabled:opacity-60">
+      <span data-label>Request early access</span>
+    </button>
+    <p class="text-center text-[13px] text-ink-500">
+      We read every request and reply by email. See our <a href="/privacy" class="underline underline-offset-2">Privacy Policy</a>.
+    </p>
+  </form>
+
+  <div data-done hidden class="flex flex-col items-center gap-3 py-10 text-center">
+    <span class="grid size-14 place-items-center rounded-full bg-brand-50 text-brand-700">
+      <svg class="size-7" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M5 12l5 5 9-10" /></svg>
+    </span>
+    <h3 class="font-display text-[26px] font-bold tracking-[-0.02em]">You’re on the list.</h3>
+    <p class="max-w-[360px] text-[15px] leading-[1.6] text-ink-600">We’ll email you an invite code as soon as there’s a spot. Keep an eye on your inbox.</p>
+  </div>
+</div>
+
+<script>
+  const root = document.querySelector<HTMLElement>("[data-early-access]");
+  const form = root?.querySelector<HTMLFormElement>("[data-form]");
+
+  if (root && form) {
+    const done = root.querySelector<HTMLElement>("[data-done]")!;
+    const submit = form.querySelector<HTMLButtonElement>("[data-submit]")!;
+    const label = submit.querySelector<HTMLElement>("[data-label]")!;
+    const errors = [...form.querySelectorAll<HTMLElement>("[data-error]")];
+
+    const show = (fields: Record<string, string[]>) => {
+      for (const el of errors) {
+        const messages = fields[el.dataset.error!];
+        el.textContent = messages?.join(" ") ?? "";
+        el.classList.toggle("hidden", !messages);
+      }
+      const first = errors.find((el) => !el.classList.contains("hidden"));
+      first?.closest("label, fieldset, p")?.scrollIntoView({ behavior: "smooth", block: "center" });
+    };
+
+    // Fixing a field clears its own complaint; the others wait for the next send.
+    const clear = (event: Event) => {
+      const key = (event.target as HTMLInputElement).name.match(/\[(\w+)\]/)?.[1];
+      errors.find((el) => el.dataset.error === key)?.classList.add("hidden");
+    };
+    form.addEventListener("input", clear);
+    form.addEventListener("change", clear);
+
+    form.addEventListener("submit", async (event) => {
+      event.preventDefault();
+      show({});
+      submit.disabled = true;
+      label.textContent = "Sending…";
+
+      try {
+        const response = await fetch(form.action, {
+          method: "POST",
+          body: new FormData(form),
+          headers: { Accept: "application/json" },
+        });
+
+        if (response.ok) {
+          form.hidden = true;
+          done.hidden = false;
+          root.scrollIntoView({ behavior: "smooth", block: "center" });
+          return;
+        }
+
+        const body = await response.json().catch(() => ({}));
+        show(body.errors ?? { base: ["Something went wrong. Try again, or email hello@tradecommand.com.au."] });
+      } catch {
+        show({ base: ["We couldn’t reach TradeCommand. Try again, or email hello@tradecommand.com.au."] });
+      } finally {
+        submit.disabled = false;
+        label.textContent = "Request early access";
+      }
+    });
+  }
+</script>
+
+<style>
+  .choice span {
+    display: inline-flex;
+    min-height: 2.75rem;
+    align-items: center;
+    padding-inline: 1rem;
+    border: 1px solid var(--color-line-field);
+    border-radius: 999px;
+    font-size: 0.9375rem;
+    font-weight: 600;
+    color: var(--color-ink-700);
+    cursor: pointer;
+    transition: border-color 0.15s, background-color 0.15s, color 0.15s;
+  }
+
+  .choice span:hover {
+    border-color: var(--color-brand-300);
+  }
+
+  .choice input:checked + span {
+    border-color: var(--color-brand-600);
+    background: var(--color-brand-50);
+    color: var(--color-brand-700);
+  }
+
+  .choice input:focus-visible + span {
+    outline: 2px solid var(--link);
+    outline-offset: 2px;
+  }
+</style>
