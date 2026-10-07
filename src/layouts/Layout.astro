@@ -5,15 +5,36 @@ import "../assets/app.css";
 interface Props {
   title?: string;
   description?: string;
+  tone?: "light" | "dark";
+  schema?: Record<string, unknown>[];
 }
 
 const {
   title = "TradeCommand — AI-native job management for trades",
   description =
-    "AI-native job management for electricians, plumbers and builders. Leads, quotes, jobs, variations, purchase orders, timesheets and invoices, with an inbox agent that turns an enquiry into a lead. Coming soon.",
+    "Job management for electricians, plumbers and builders, with Claude built in. Leads, quotes, jobs, variations, purchase orders, timesheets and invoices, and an inbox that turns an enquiry into a lead.",
+  tone = "light",
+  schema = [],
 } = Astro.props;
 
-const canonical = new URL(Astro.url.pathname, Astro.site).toString();
+const dark = tone === "dark";
+
+const site = Astro.site!;
+// build.format "file" makes the pathname /privacy.html; every link says /privacy.
+const canonical = new URL(Astro.url.pathname.replace(/(index)?\.html$/, ""), site).toString();
+
+const organization = {
+  "@type": "Organization",
+  "@id": new URL("/#organization", site).toString(),
+  name: "TradeCommand",
+  legalName: "TC Systems Pty Ltd",
+  url: site.toString(),
+  logo: new URL("/icon.png", site).toString(),
+  email: "hello@tradecommand.com.au",
+  areaServed: "AU",
+};
+
+const graph = JSON.stringify({ "@context": "https://schema.org", "@graph": [organization, ...schema] });
 ---
 
 <!doctype html>
@@ -21,7 +42,7 @@ const canonical = new URL(Astro.url.pathname, Astro.site).toString();
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
-    <meta name="theme-color" content="#fefbfa" />
+    <meta name="theme-color" content={dark ? "#1d1210" : "#fefbfa"} />
     <meta name="generator" content={Astro.generator} />
 
     <SEO
@@ -29,14 +50,17 @@ const canonical = new URL(Astro.url.pathname, Astro.site).toString();
       description={description}
       canonical={canonical}
       openGraph={{
-        basic: { title, type: "website", image: new URL("/icon.png", Astro.site).toString(), url: canonical },
+        basic: { title, type: "website", image: new URL("/icon.png", site).toString(), url: canonical },
         optional: { description, siteName: "TradeCommand", locale: "en_AU" },
         image: { alt: "The TradeCommand mark." },
       }}
       twitter={{ card: "summary" }}
     />
 
+    <script is:inline type="application/ld+json" set:html={graph} />
+
     <link rel="preload" href="/figtree-latin.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href="/bricolage-grotesque-latin.woff2" as="font" type="font/woff2" crossorigin />
 
     <link rel="icon" href="/icon.svg" type="image/svg+xml" />
     <link rel="icon" href="/icon-192.png" type="image/png" sizes="192x192" />
@@ -44,7 +68,7 @@ const canonical = new URL(Astro.url.pathname, Astro.site).toString();
 
     <link rel="sitemap" href="/sitemap-index.xml" />
   </head>
-  <body class="bg-base-100 text-base-content min-h-dvh antialiased">
+  <body class:list={["min-h-dvh antialiased", dark ? "bg-ground text-white" : "bg-base-100 text-base-content"]}>
     <slot />
   </body>
 </html>
